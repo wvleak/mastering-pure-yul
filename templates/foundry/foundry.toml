@@ -1,0 +1,4 @@
+[default]
+out = 'out'
+libs = ['lib']
+ffi = true

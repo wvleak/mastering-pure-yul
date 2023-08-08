@@ -1,30 +1,38 @@
-# Learn pure yul development
-Learn how to write, test and deploy pure yul code!
+# Mastering Pure Yul Development
 
-## Description
+Learn the art of crafting, testing, and deploying smart contracts using pure Yul code!
 
-You might want to code contracts purely in Yul for learning purposes or when having very optimized code is beneficial (e.g. MEV).
-Here you will find guidance on how to develop in pure yul with hardhat or foundry. 
+## Overview
+
+Whether you're seeking a comprehensive understanding of Ethereum's inner workings or aiming to harness ultra-optimized code for purposes like MEV, delving into pure Yul development could be your next step. Here, I provide some guidance on honing your pure Yul skills, employing Hardhat and Foundry.
+
 ## Contents
-- [Learn](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#learn)
-- [Compile](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#compile)
-- [Test](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#test)
-- [Deploy](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#deploy)
-- [Pros and Cons](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#learn)
 
-## Learn
-### Ressources
-Here's a collection of ressources to learn Yul
+- [Learning Path](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#learn)
+- [Compilation](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#compile)
+- [Testing](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#test)
+- [Deployment](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#deploy)
+- [Pros and Cons](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#pros-and-cons)
+
+## Learning Path
+
+### Resources
+
+Explore these resources to master Yul:
+
 - Yul - Solidity [documentation](https://docs.soliditylang.org/en/v0.8.21/yul.html)
-- Jeffrey Scholz [Udemy course](https://www.udemy.com/course/advanced-solidity-yul-and-assembly/)
-- andreitoma8 [learn-yul repo](https://github.com/andreitoma8/learn-yul): notes from Jeffrey Scholz course
-- Jesper Kristensen [youtube channel](https://www.youtube.com/watch?v=bdVb_wAdMfg)
-- deliriusz [foundry-yul-puzzles repo](https://github.com/deliriusz/foundry-yul-puzzles)
-Some of the templates you'll see here are inspired from those ressources. 
-### Pure Yul contract structure
+- Jeffrey Scholz's [Udemy course](https://www.udemy.com/course/advanced-solidity-yul-and-assembly/)
+- andreitoma8's [learn-yul repository](https://github.com/andreitoma8/learn-yul): Notes from Jeffrey Scholz's course
+- Jesper Kristensen's [YouTube channel](https://www.youtube.com/watch?v=bdVb_wAdMfg)
+- deliriusz's [foundry-yul-puzzles repository](https://github.com/deliriusz/foundry-yul-puzzles)
+
+Several templates within this tutorial draw inspiration from these resources.
+
+### Pure Yul Contract Structure
+
 ```yul
 object "Example" {
-  // Constructor 
+  // Constructor
   code {
     datacopy(0, dataoffset("Runtime"), datasize("Runtime"))
     return(0, datasize("Runtime"))
@@ -39,32 +47,41 @@ object "Example" {
   }
 }
 ```
-You can find examples of contracts fully written in Yul in my repo [here](https://github.com/wvleak/yul-token-contracts).
-## Compile
-To compile Yul, you will need the [solidity compiler](https://docs.soliditylang.org/en/latest/installing-solidity.html) installed
 
-Now you can compile your code with:
+For fully Yul-written contract examples, refer to my repository [here](https://github.com/wvleak/yul-token-contracts).
+
+## Compilation
+
+To compile Yul, you'll need the [Solidity compiler](https://docs.soliditylang.org/en/latest/installing-solidity.html) installed. Compile your code using:
+
 ```bash
 solc --strict-assembly [path to your file] --bin
 ```
-This command will output the binary of your contract in hex
 
-## Test
+This command outputs the hexadecimal binary representation of your contract.
+
+## Testing
+
 ### Foundry
-You will need to deploy the compiled contract via the CREATE instruction
-Here's an example: 
+
+To deploy your compiled contract using the CREATE instruction in Foundry, follow this example:
+
 ```solidity
 pragma solidity 0.8.15;
 
 import "forge-std/Test.sol";
 
 contract YulDeployer is Test {
-    ///@notice Compiles a Yul contract and returns the address that the contract was deployed to
-    ///@notice If deployment fails, an error will be thrown
-    ///@param fileName - The file name of the Yul contract. For example, the file name for "Example.yul" is "Example"
-    ///@return deployedAddress - The address that the contract was deployed to
+    /**
+     * @notice Deploys a Yul contract and returns the address where the contract was deployed
+     * @param fileName - The file name of the Yul contract (e.g., "Example.yul" becomes "Example")
+     * @return deployedAddress - The address where the contract was deployed
+     */
     function deployContract(string memory fileName) public returns (address) {
-        string memory bashCommand = string.concat('cast abi-encode "f(bytes)" $(solc --strict-assembly yul/', string.concat(fileName, ".yul --bin | grep '^[0-9a-fA-Z]*$')"));
+        string memory bashCommand = string.concat(
+            'cast abi-encode "f(bytes)" $(solc --strict-assembly yul/',
+            string.concat(fileName, ".yul --bin | grep '^[0-9a-fA-Z]*$')")
+        );
 
         string[] memory inputs = new string[](3);
         inputs[0] = "bash";
@@ -73,24 +90,23 @@ contract YulDeployer is Test {
 
         bytes memory bytecode = abi.decode(vm.ffi(inputs), (bytes));
 
-        ///@notice deploy the bytecode with the create instruction
         address deployedAddress;
         assembly {
             deployedAddress := create(0, add(bytecode, 0x20), mload(bytecode))
         }
 
-        ///@notice check that the deployment was successful
         require(
             deployedAddress != address(0),
             "YulDeployer could not deploy contract"
         );
 
-        ///@notice return the address that the contract was deployed to
         return deployedAddress;
     }
 }
 ```
-Now you will be able to call the contract in your test via an interface:
+
+With this deployment logic in place, you can now interact with the deployed contract using an interface:
+
 ```solidity
 pragma solidity >=0.8.0;
 
@@ -118,51 +134,61 @@ contract ExampleTest is Test {
     }
 }
 ```
-*Thanks [CodeForcer](https://github.com/CodeForcer/foundry-yul) for the template*
 
-### Hardhat
-With hardhat, you will have to build the contract bytecode and create the abi before being able to use it.
-You can compile and get the output bytecode in a build folder via this code:
+_Special thanks to [CodeForcer](https://github.com/CodeForcer/foundry-yul) for providing this template._
+
+### Using Hardhat
+
+To utilize Hardhat effectively, you must generate the contract bytecode and create the ABI before you can employ the contract. This script details how to compile and obtain the bytecode's output within a designated build folder:
+
 ```javascript
 const path = require("path");
 const fs = require("fs");
 const solc = require("solc");
-const { error } = require("console");
 
-const outputPath = path.resolve(__dirname, "..", "build", "ContractName.bytecode.json");
-
-const inputPath = path.resolve(__dirname, "..", "contracts", "ContractName.sol");
+const outputPath = path.resolve(
+  __dirname,
+  "..",
+  "build",
+  "ContractName.bytecode.json"
+);
+const inputPath = path.resolve(
+  __dirname,
+  "..",
+  "contracts",
+  "ContractName.sol"
+);
 const source = fs.readFileSync(inputPath, "utf-8");
 
-var input = {
-    language: 'Yul',
-    sources: {
-        'ContractName.sol' : {
-            content: source
-        }
+const input = {
+  language: "Yul",
+  sources: {
+    "ContractName.sol": {
+      content: source,
     },
-    settings: {
-        outputSelection: {
-            '*': {
-                '*': [ "evm.bytecode" ]
-            }
-        }
-    }
+  },
+  settings: {
+    outputSelection: {
+      "*": {
+        "*": ["evm.bytecode"],
+      },
+    },
+  },
 };
 
-const compiledContract = solc.compile(JSON.stringiify(input));
-const bytecode = JSON.parse(compiledContract).contracts["ContractName.sol"].PureYul.evm.bytecode.object;
+const compiledContract = solc.compile(JSON.stringify(input));
+const bytecode =
+  JSON.parse(compiledContract).contracts["ContractName.sol"].PureYul.evm
+    .bytecode.object;
 
-
-
-fs.writeFile(outputPath, JSON.stringify(bytecode), (err) => {});
+fs.writeFileSync(outputPath, JSON.stringify(bytecode));
 ```
-Contrary to solidity, the contract abi is not created automatically. You will have to write it yourself.
-Here's an example:
+
+In contrast to Solidity, the contract ABI is not generated automatically; it requires manual creation. Consider the following example:
+
 ```solidity
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
-
 
 contract Test {
     constructor() { b = hex"12345678901234567890123456789012"; }
@@ -173,53 +199,80 @@ contract Test {
     bytes32 b;
 }
 ```
-would result in the JSON:
-```json
-[{
-"type":"error",
-"inputs": [{"name":"available","type":"uint256"},{"name":"required","type":"uint256"}],
-"name":"InsufficientBalance"
-}, {
-"type":"event",
-"inputs": [{"name":"a","type":"uint256","indexed":true},{"name":"b","type":"bytes32","indexed":false}],
-"name":"Event"
-}, {
-"type":"event",
-"inputs": [{"name":"a","type":"uint256","indexed":true},{"name":"b","type":"bytes32","indexed":false}],
-"name":"Event2"
-}, {
-"type":"function",
-"inputs": [{"name":"a","type":"uint256"}],
-"name":"foo",
-"outputs": []
-}]
-```
-Now that you have the abi and the bytecode in the build folder, you will be able to deploy your contract in the test file as usual:
-```javascript
-  var abi = require("../build/PureYul.abi.json");
-  var bytecode = require("../build/PureYul.bytecode.json");
 
-  const contractInstance = await(await ethers.getContractFactory(abi, bytecode)).deploy();
+This Solidity code yields the following JSON representation:
+
+```json
+[
+  {
+    "type": "error",
+    "inputs": [
+      { "name": "available", "type": "uint256" },
+      { "name": "required", "type": "uint256" }
+    ],
+    "name": "InsufficientBalance"
+  },
+  {
+    "type": "event",
+    "inputs": [
+      { "name": "a", "type": "uint256", "indexed": true },
+      { "name": "b", "type": "bytes32", "indexed": false }
+    ],
+    "name": "Event"
+  },
+  {
+    "type": "event",
+    "inputs": [
+      { "name": "a", "type": "uint256", "indexed": true },
+      { "name": "b", "type": "bytes32", "indexed": false }
+    ],
+    "name": "Event2"
+  },
+  {
+    "type": "function",
+    "inputs": [{ "name": "a", "type": "uint256" }],
+    "name": "foo",
+    "outputs": []
+  }
+]
 ```
-You will just have to add the `--no-compile` when running your test command:
+
+With the ABI and bytecode saved in the build folder, you can deploy your contract within a test file as follows:
+
+```javascript
+const abi = require("../build/PureYul.abi.json");
+const bytecode = require("../build/PureYul.bytecode.json");
+
+const contractInstance = await (
+  await ethers.getContractFactory(abi, bytecode)
+).deploy();
+```
+
+For your test command, remember to add `--no-compile` when executing:
+
 ```bash
 npx hardhat run test/PureYul.test.js --no-compile
 ```
 
-*Thanks [Jesper Kristensen](https://www.youtube.com/watch?v=bdVb_wAdMfg) for the template*
-## Deploy
-### Foundry:
-#### Locally
-create a script `Deploy.sol` in the scripts folder.
-Here's an example:
+_Credits to [Jesper Kristensen](https://www.youtube.com/watch?v=bdVb_wAdMfg) for the template._
+
+## Deployment
+
+### Foundry
+
+When deploying contracts with Foundry, you can follow these steps:
+
+#### Local Deployment
+
+- Create a script `Deploy.sol` in the scripts folder.
+  _Example:_
+
 ```solidity
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
-import "../test/lib/ERC20YulDeployer.sol";
 import "forge-std/console.sol";
 
-interface ERC20Yul {}
 
 contract DeployScript is Script {
     function run() public {
@@ -228,7 +281,7 @@ contract DeployScript is Script {
         vm.startBroadcast(deployerPrivateKey);
         string memory bashCommand = string.concat(
             'cast abi-encode "f(bytes)" $(solc --strict-assembly yul/',
-            string.concat("ERC721Yul", ".yul --bin | grep '^[0-9a-fA-Z]*$')")
+            string.concat("YourContract", ".yul --bin | grep '^[0-9a-fA-Z]*$')")
         );
 
         string[] memory inputs = new string[](3);
@@ -257,34 +310,42 @@ contract DeployScript is Script {
     }
 }
 ```
-Start anvil
+
+- Lauch Anvil:
+
 ```bash
 anvil
 ```
-Create a .env file with a private key given to you by Anvil.
+
+- Generate a `.env` and include a private key provided by Anvil:
+
 ```.env
 PRIVATE_KEY=
 ```
 
-Then run the following script:
+- Execute the script locally:
+
 ```bash
 forge script ./script/Deploy.sol:DeployScript --fork-url http://localhost:8545 --broadcast
 ```
-#### Any network
-Update your .env file with your deployment private key.
-Then run this command:
+
+#### Network Deployment
+
+Update your .env file with your deployment private key, then execute:
+
 ```bash
 forge script ./script/Deploy.sol:DeployScript --rpc-url [NETWORK_RPC_URL] --broadcast
 ```
-The broadcast transaction logs will be stored in the `broadcast` directory by default. You can change the logs location by setting broadcast in your foundry.toml file. 
-### Hardhat:
-With Hardhat, you can use this deploy template:
-```javascript:
+
+### Hardhat
+
+Use a deploy script similar to:
+
+```javascript
 const hre = require("hardhat");
 
 async function main() {
-  var abi = require("../build/PureYul.abi.json");
-  var bytecode = require("../build/PureYul.bytecode.json");
+  // ABI and bytecode import...
 
   const PureYulContract = await ethers.getContractFactory(abi, bytecode);
 
@@ -295,43 +356,37 @@ async function main() {
 }
 main();
 ```
-**To deploy it locally:**
+
+For local deployment:
+
 ```bash
 npx hardhat run --network localhost scripts/deploy.js
 ```
-**Any network:**
-As general rule, you can target any network from your Hardhat config using:
+
+For network deployment, as general rule, you can target any network from your Hardhat config using:
+
 ```bash
 npx hardhat run --network <your-network> scripts/deploy.js
 ```
 
+## Pros and Cons
 
-## Pros and Cons 
-Here are some pros and cons of pure Yul development for smart contracts:
+Consider these advantages and disadvantages of pure Yul development for smart contracts:
 
-**Pros:**
+**Advantages:**
 
-1. **Fine Control** 
+1. **Precision Control**: Achieve meticulous control over contract behavior and optimize for gas efficiency.
+2. **Gas Efficiency**: Craft contracts that consume less gas, optimizing transaction costs.
+3. **Memory Management**: Lower-level management reduces vulnerabilities tied to memory allocation or reentrancy attacks.
+4. **Learning Experience**: Gain in-depth insights into EVM operations, memory management, and execution flow.
+5. **Optimization**
 
-2. **Gas Efficiency** 
+**Disadvantages:**
 
-3. **Memory Management** 
+1. **Complexity**: Yul's low-level nature demands deep understanding of EVM mechanics, leading to potentially error-prone development.
+2. **Development Time**: Building in Yul can be time-intensive due to intricate manual management of low-level details.
+3. **Abstraction Limitations**: Yul lacks high-level abstractions, leading to longer development cycles and complex maintenance.
+4. **Debugging Challenges**: Debugging Yul code can be harder due to limited tooling and intricate low-level operations.
+5. **Limited Resources**: Solidity enjoys a larger community and resources, making Yul a less supported choice.
 
-4. **Learning EVM Operations** 
-
-5. **Optimization** 
-
-**Cons:**
-
-1. **Complexity**
-
-2. **Development Speed** 
-
-3. **Limited Abstraction** 
-
-4. **Debugging** 
-
-5. **Lack of Resources** 
-
-In summary, developing smart contracts using pure Yul can offer greater gas efficiency, control, and security, but it comes at the cost of increased complexity, slower development speed, and reduced abstraction. The choice between using Yul and a higher-level language like Solidity depends on your project's requirements, your familiarity with the EVM, and your willingness to invest time in low-level optimizations.
-
+In conclusion, pure Yul development offers gas efficiency and control, but comes with complexity and potential delays. The decision between Yul and higher-level languages depends on your project's needs, your EVM expertise, and your willingness to optimize at the bytecode level.

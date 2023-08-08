@@ -1,0 +1,138 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220ef171a3615319250f7acfc66a4066b183dc2e7037fb41b0ff4936eb82713f63d64736f6c634300080f0033",
+    "sourceMap": "64:40:8:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052600080fdfea2646970667358221220ef171a3615319250f7acfc66a4066b183dc2e7037fb41b0ff4936eb82713f63d64736f6c634300080f0033",
+    "sourceMap": "64:40:8:-:0;;;;;",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"yul/Contract.sol\":\"Contract\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":ds-test/=lib/solmate/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\",\":solmate/=lib/solmate/src/\"]},\"sources\":{\"yul/Contract.sol\":{\"keccak256\":\"0xe1ac8698037452d2354d9da840028d7f261458ed7e041850d19901096e613351\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://db7a67517e2e54a1deb61ffd49bb7e6359f4d9463b4ecd2ac9684e59bfeaf7b9\",\"dweb:/ipfs/QmVdDr3GgLNL1DAe9RFpN1jJXsFab3xdJy1sitmbnPaQz3\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.15+commit.e14f2714"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":ds-test/=lib/solmate/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/",
+        ":solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "yul/Contract.sol": "Contract"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "yul/Contract.sol": {
+        "keccak256": "0xe1ac8698037452d2354d9da840028d7f261458ed7e041850d19901096e613351",
+        "urls": [
+          "bzz-raw://db7a67517e2e54a1deb61ffd49bb7e6359f4d9463b4ecd2ac9684e59bfeaf7b9",
+          "dweb:/ipfs/QmVdDr3GgLNL1DAe9RFpN1jJXsFab3xdJy1sitmbnPaQz3"
+        ],
+        "license": "UNLICENSED"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "yul/Contract.sol",
+    "id": 21091,
+    "exportedSymbols": {
+      "Contract": [
+        21090
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "39:65:8",
+    "nodes": [
+      {
+        "id": 21087,
+        "nodeType": "PragmaDirective",
+        "src": "39:23:8",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "0.8",
+          ".15"
+        ]
+      },
+      {
+        "id": 21090,
+        "nodeType": "ContractDefinition",
+        "src": "64:40:8",
+        "nodes": [
+          {
+            "id": 21089,
+            "nodeType": "VariableDeclaration",
+            "src": "88:13:8",
+            "nodes": [],
+            "constant": false,
+            "mutability": "mutable",
+            "name": "owner",
+            "nameLocation": "96:5:8",
+            "scope": 21090,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 21088,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "88:7:8",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "internal"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Contract",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          21090
+        ],
+        "name": "Contract",
+        "nameLocation": "73:8:8",
+        "scope": 21091,
+        "usedErrors": []
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 8
+}
