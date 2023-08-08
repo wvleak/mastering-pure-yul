@@ -62,7 +62,7 @@ This command outputs the hexadecimal binary representation of your contract.
 
 ## Testing
 
-### Foundry
+### Using Foundry
 
 To deploy your compiled contract using the CREATE instruction in Foundry, follow this example:
 
@@ -139,7 +139,7 @@ _Special thanks to [CodeForcer](https://github.com/CodeForcer/foundry-yul) for p
 
 ### Using Hardhat
 
-To utilize Hardhat effectively, you must generate the contract bytecode and create the ABI before you can employ the contract. This script details how to compile and obtain the bytecode's output within a designated build folder:
+To utilize Hardhat effectively, you must generate the contract bytecode and create the ABI before you can employ the contract. This script compiles and obtains the bytecode's output within a designated build folder:
 
 ```javascript
 const path = require("path");
