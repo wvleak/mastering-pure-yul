@@ -15,6 +15,7 @@ Here's a collection of ressources to learn Yul
 - andreitoma8 [learn-yul repo](https://github.com/andreitoma8/learn-yul): notes from Jeffrey Scholz course
 - Jesper Kristensen [youtube channel](https://www.youtube.com/watch?v=bdVb_wAdMfg)
 - deliriusz [foundry-yul-puzzles repo](https://github.com/deliriusz/foundry-yul-puzzles)
+Some of the templates you'll see here are inspired from those ressources. Special thanks to Jesper Kristensen for the hardhat template.
 ### Pure yul contract structure
 ```yul
 object "Example" {
