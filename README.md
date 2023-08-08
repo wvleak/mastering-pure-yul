@@ -8,11 +8,11 @@ Whether you're seeking a comprehensive understanding of Ethereum's inner working
 
 ## Contents
 
-- [Learning Path](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#learn)
-- [Compilation](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#compile)
-- [Testing](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#test)
-- [Deployment](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#deploy)
-- [Pros and Cons](https://github.com/wvleak/pure-yul-tutorial/edit/main/README.md#pros-and-cons)
+- [Learning Path](https://github.com/wvleak/pure-yul-tutorial/tree/main#learning-path)
+- [Compilation](https://github.com/wvleak/pure-yul-tutorial/tree/main#compilation)
+- [Testing](https://github.com/wvleak/pure-yul-tutorial/tree/main#testing)
+- [Deployment](https://github.com/wvleak/pure-yul-tutorial/tree/main#deployment)
+- [Pros and Cons](https://github.com/wvleak/pure-yul-tutorial/tree/main#pros-and-cons)
 
 ## Learning Path
 
@@ -26,7 +26,7 @@ Explore these resources to master Yul:
 - Jesper Kristensen's [YouTube channel](https://www.youtube.com/watch?v=bdVb_wAdMfg)
 - deliriusz's [foundry-yul-puzzles repository](https://github.com/deliriusz/foundry-yul-puzzles)
 
-Several templates within this tutorial draw inspiration from these resources.
+Templates within this tutorial draw inspiration from these resources.
 
 ### Pure Yul Contract Structure
 
