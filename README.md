@@ -363,7 +363,7 @@ For local deployment:
 npx hardhat run --network localhost scripts/deploy.js
 ```
 
-For network deployment, as general rule, you can target any network from your Hardhat config using:
+As general rule, you can target any network from your Hardhat config using:
 
 ```bash
 npx hardhat run --network <your-network> scripts/deploy.js
