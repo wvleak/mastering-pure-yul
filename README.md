@@ -387,6 +387,6 @@ Consider these advantages and disadvantages of pure Yul development for smart co
 2. **Development Time**: Building in Yul can be time-intensive due to intricate manual management of low-level details.
 3. **Abstraction Limitations**: Yul lacks high-level abstractions, leading to longer development cycles and complex maintenance.
 4. **Debugging Challenges**: Debugging Yul code can be harder due to limited tooling and intricate low-level operations.
-5. **Limited Resources**: Solidity enjoys a larger community and resources, making Yul a less supported choice.
+5. **Limited Resources**: Solidity enjoys a larger community and resources, making Yul a less supported choice. Moreover, your Yul contracts cannont be verified on etherscan.
 
 In conclusion, pure Yul development offers gas efficiency and control, but comes with complexity and potential delays. The decision between Yul and higher-level languages depends on your project's needs, your EVM expertise, and your willingness to optimize at the bytecode level.
