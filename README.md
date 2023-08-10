@@ -64,7 +64,7 @@ This command outputs the hexadecimal binary representation of your contract.
 
 ### Using Foundry
 
-To deploy your compiled contract using the CREATE instruction in Foundry, follow this example:
+To deploy and use your compiled contract in a test, you can use the CREATE instruction as in this example:
 
 ```solidity
 pragma solidity 0.8.15;
@@ -105,14 +105,10 @@ contract YulDeployer is Test {
 }
 ```
 
-With this deployment logic in place, you can now interact with the deployed contract using an interface:
+With this deployment logic in place, you can now interact with the contract. <br>
+*Make sure you have the ffi allowed before running your tests. Add: `ffi = true` in foundry.toml file.*
 
 ```solidity
-pragma solidity >=0.8.0;
-
-import "forge-std/Test.sol";
-import "./lib/YulDeployer.sol";
-
 interface Example {}
 
 contract ExampleTest is Test {
@@ -123,15 +119,7 @@ contract ExampleTest is Test {
     function setUp() public {
         exampleContract = Example(yulDeployer.deployContract("Example"));
     }
-
-    function testExample() public {
-        bytes memory callDataBytes = abi.encodeWithSignature("randomBytes()");
-
-        (bool success, bytes memory data) = address(exampleContract).call{gas: 100000, value: 0}(callDataBytes);
-
-        assertTrue(success);
-        assertEq(data, callDataBytes);
-    }
+      ...
 }
 ```
 
@@ -184,60 +172,10 @@ const bytecode =
 fs.writeFileSync(outputPath, JSON.stringify(bytecode));
 ```
 
-In contrast to Solidity, the contract ABI is not generated automatically; it requires manual creation. Consider the following example:
+In contrast to Solidity, the contract ABI is not generated automatically; it requires manual creation.
+Here are the [specifications](https://docs.soliditylang.org/en/v0.8.21/abi-spec.html#json) of an ABI.
 
-```solidity
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.4;
-
-contract Test {
-    constructor() { b = hex"12345678901234567890123456789012"; }
-    event Event(uint indexed a, bytes32 b);
-    event Event2(uint indexed a, bytes32 b);
-    error InsufficientBalance(uint256 available, uint256 required);
-    function foo(uint a) public { emit Event(a, b); }
-    bytes32 b;
-}
-```
-
-This Solidity code yields the following JSON representation:
-
-```json
-[
-  {
-    "type": "error",
-    "inputs": [
-      { "name": "available", "type": "uint256" },
-      { "name": "required", "type": "uint256" }
-    ],
-    "name": "InsufficientBalance"
-  },
-  {
-    "type": "event",
-    "inputs": [
-      { "name": "a", "type": "uint256", "indexed": true },
-      { "name": "b", "type": "bytes32", "indexed": false }
-    ],
-    "name": "Event"
-  },
-  {
-    "type": "event",
-    "inputs": [
-      { "name": "a", "type": "uint256", "indexed": true },
-      { "name": "b", "type": "bytes32", "indexed": false }
-    ],
-    "name": "Event2"
-  },
-  {
-    "type": "function",
-    "inputs": [{ "name": "a", "type": "uint256" }],
-    "name": "foo",
-    "outputs": []
-  }
-]
-```
-
-With the ABI and bytecode saved in the build folder, you can deploy your contract within a test file as follows:
+With the ABI and bytecode saved in the build folder, you can now deploy your contract within a test file as follows:
 
 ```javascript
 const abi = require("../build/PureYul.abi.json");
@@ -248,7 +186,7 @@ const contractInstance = await (
 ).deploy();
 ```
 
-For your test command, remember to add `--no-compile` when executing:
+For your test command, as the contract is already built, to avoid any error, remember to add `--no-compile` when executing:
 
 ```bash
 npx hardhat run test/PureYul.test.js --no-compile
@@ -336,6 +274,7 @@ Update your .env file with your deployment private key, then execute:
 ```bash
 forge script ./script/Deploy.sol:DeployScript --rpc-url [NETWORK_RPC_URL] --broadcast
 ```
+You will get the output of your transaction in the broadcast folder. 
 
 ### Hardhat
 
@@ -356,13 +295,13 @@ async function main() {
 }
 main();
 ```
-
+#### Local Deployment
 For local deployment:
 
 ```bash
 npx hardhat run --network localhost scripts/deploy.js
 ```
-
+#### Network Deployment
 As general rule, you can target any network from your Hardhat config using:
 
 ```bash
@@ -371,7 +310,8 @@ npx hardhat run --network <your-network> scripts/deploy.js
 
 ## Pros and Cons
 
-Consider these advantages and disadvantages of pure Yul development for smart contracts:
+Now you know how to compile, test and deploy pure Yul contract! 
+Let's dig into the pros and cons of using pure Yul for smart contract development:
 
 **Advantages:**
 
