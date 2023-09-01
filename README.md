@@ -5,6 +5,8 @@ Learn the art of crafting, testing, and deploying smart contracts using pure Yul
 ## Overview
 
 Whether you're seeking a comprehensive understanding of Ethereum's inner workings or aiming to harness ultra-optimized code for purposes like MEV, delving into pure Yul development could be your next step. Here, I provide some guidance on honing your pure Yul skills, employing Hardhat and Foundry.
+<br><br>
+_Prebuilt templates for pure yul contracts development are available in the `templates` directory._
 
 ## Contents
 
