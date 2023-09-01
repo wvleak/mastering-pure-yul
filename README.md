@@ -55,7 +55,7 @@ For fully Yul-written contract examples, refer to my repository [here](https://g
 To compile Yul, you'll need the [Solidity compiler](https://docs.soliditylang.org/en/latest/installing-solidity.html) installed. Compile your code using:
 
 ```bash
-solc --strict-assembly [path to your file] --bin
+solc --strict-assembly [FILE_PATH] --bin
 ```
 
 This command outputs the hexadecimal binary representation of your contract.
@@ -106,7 +106,7 @@ contract YulDeployer is Test {
 ```
 
 With this deployment logic in place, you can now interact with the contract. <br>
-*Make sure you have the ffi allowed before running your tests. Add: `ffi = true` in foundry.toml file.*
+Set up your test like so:
 
 ```solidity
 interface Example {}
@@ -122,6 +122,11 @@ contract ExampleTest is Test {
       ...
 }
 ```
+You can now launch your test with:
+```bash
+forge test -vvv
+```
+*Make sure you have the ffi allowed before running your tests. Add: `ffi = true` in foundry.toml file.*
 
 _Special thanks to [CodeForcer](https://github.com/CodeForcer/foundry-yul) for providing this template._
 
