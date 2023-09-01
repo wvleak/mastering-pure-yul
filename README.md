@@ -64,7 +64,7 @@ This command outputs the hexadecimal binary representation of your contract.
 
 ### Using Foundry
 
-To deploy and use your compiled contract in a test, you can use the CREATE instruction as in this example:
+To use your compiled contract in a test, you'll need to deploy it. In Foundry, you can do so by using the inline assembly CREATE instruction. Refer to this example:
 
 ```solidity
 pragma solidity 0.8.15;
